@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import userRoute from './routes/user.route';
+import productRoute from './routes/product.route';
 import { seedInitialProducts } from './services/productService';
 
 dotenv.config();
@@ -19,6 +20,7 @@ seedInitialProducts(); // this function we use it to add some products to the da
 
 // Routes
 app.use('/user', userRoute);
+app.use('/product', productRoute);
 
 // Runnig the server
 app.listen(PORT, () => {
