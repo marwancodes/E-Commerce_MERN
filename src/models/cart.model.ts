@@ -1,7 +1,7 @@
 import mongoose, { Document, ObjectId, Schema} from "mongoose";
 import { IProduct } from "./product.model";
 
-const CartStatusEnum = ["active", "completed"];
+const CartStatusEnum = ["active", "completed"]; 
 
 export interface ICartItem extends Document { // this interface to make new rules and types for the cart item
     product: IProduct;
@@ -17,9 +17,9 @@ export interface ICart extends Document { // this interface to make new rules an
 }
 
 const cartItemSchema = new Schema<ICartItem>({ // this is the schema for the cart item
-    product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
-    quantity: { type: Number, required: true, default: 1 },
-    unitPrice: { type: Number, required: true }
+    product: { type: Schema.Types.ObjectId, ref: "Product", required: true }, // this is the product id
+    quantity: { type: Number, required: true, default: 1 }, 
+    unitPrice: { type: Number, required: true } 
 })
 
 
