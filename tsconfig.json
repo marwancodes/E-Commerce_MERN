@@ -107,6 +107,7 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                               /* Skip type checking all .d.ts files. */
+
   },
   "include": ["src/**/*"],  /* include: which means we gonna make typescript on src */
   "exclude": ["node_modules"] /* exlude: which means we not will make typescript on node_modules */

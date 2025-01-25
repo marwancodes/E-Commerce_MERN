@@ -10,7 +10,7 @@ export interface ICartItem extends Document { // this interface to make new rule
 }
 
 export interface ICart extends Document { // this interface to make new rules and types for the cart
-    userId: ObjectId | string;
+    userId: ObjectId | string; // this is the user id
     items: ICartItem[];
     totalAmount: number;
     status: "active" | "completed";
