@@ -1,9 +1,11 @@
 import express from 'express';
-import { addItemToCart, getActiveCartForUser, updateItemInCart } from '../services/cartService';
+import { addItemToCart, deleteItemFromCart, getActiveCartForUser, updateItemInCart } from '../services/cartService';
 import validateJWT from '../middlewares/validateJWT';
 import { ExtendRequest } from '../types/extendedRequest'
 
 const router = express.Router();
+
+// Endpoints for the cart
 
 router.get('/', validateJWT, async(req: ExtendRequest, res) => {
     const userId = req.user?._id;
@@ -27,6 +29,13 @@ router.put('/items', validateJWT, async (req: ExtendRequest, res) => {
     const userId = req.user?._id; //TODO: get the userId from JWT after validating from the middleware.
     const { productId, quantity } = req.body; // get the productId and quantity from the request body
     const response = await updateItemInCart({ userId, productId, quantity });
+    res.status(response.statusCode).send(response.data);
+});
+
+router.delete('/items/:productId', validateJWT, async (req: ExtendRequest, res) => {
+    const userId = req.user?._id; //TODO: get the userId from JWT after validating from the middleware.
+    const { productId } = req.params; // get the productId from the request params
+    const response = await deleteItemFromCart({ userId, productId });
     res.status(response.statusCode).send(response.data);
 });
 

@@ -77,7 +77,7 @@ interface UpdateItemInCart {
 }
 
 export const updateItemInCart = async ({ productId, quantity, userId }: UpdateItemInCart) => {
-    const cart = await getActiveCartForUser({ userId });
+    const cart = await getActiveCartForUser({ userId }); // get the active cart for the user
 
     // Does the product already exist in the cart?
     const existsInCart = cart.items.find((p) => p.product.toString() === productId); 
@@ -113,4 +113,37 @@ export const updateItemInCart = async ({ productId, quantity, userId }: UpdateIt
 
     const updatedCart = await cart.save();
     return { data: updatedCart, statusCode: 200 };    
+}
+
+//************************************** Delete Item From Cart ********************************************************************
+interface DeleteItemFromCart {
+    productId: any;
+    userId: string;
+}
+
+export const deleteItemFromCart = async ({ productId, userId }: DeleteItemFromCart) => {
+    const cart = await getActiveCartForUser({ userId }); // get the active cart for the user
+
+    // Does the product already exist in the cart?
+    const existsInCart = cart.items.find((p) => p.product.toString() === productId);
+
+    if (!existsInCart) { 
+        return { data: "Item does not exists in cart!!", statusCode: 400 }
+    }
+
+    const otherCartItems = cart.items.filter((p) => p.product.toString() !== productId); // filter out the product that needs to be updated
+    
+    // calculate the total amount for the cart
+    let total = otherCartItems.reduce((sum, product) => { // calculate the total amount for the cart
+        sum += product.quantity * product.unitPrice;
+        return sum;
+    }, 0);
+
+
+    cart.items = otherCartItems; // update the items in the cart
+    cart.totalAmount = total; // update the total amount for the cart
+
+
+    const updatedCart = await cart.save();
+    return { data: updatedCart, statusCode: 200 };
 }
