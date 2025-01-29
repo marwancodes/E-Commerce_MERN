@@ -109,6 +109,7 @@ export const updateItemInCart = async ({ productId, quantity, userId }: UpdateIt
     
     existsInCart.quantity = quantity;
     total += existsInCart.quantity * existsInCart.unitPrice;
+    cart.totalAmount = total; // update the total amount for the cart
 
     const updatedCart = await cart.save();
     return { data: updatedCart, statusCode: 200 };    
