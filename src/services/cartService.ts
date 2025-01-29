@@ -147,3 +147,18 @@ export const deleteItemFromCart = async ({ productId, userId }: DeleteItemFromCa
     const updatedCart = await cart.save();
     return { data: updatedCart, statusCode: 200 };
 }
+
+//************************************** Clean Cart ********************************************************************
+interface CleanCart {
+    userId: string;
+}
+
+export const cleanCart = async ({ userId }: CleanCart) => {
+    const cart = await getActiveCartForUser({ userId }); // get the active cart for the user
+
+    cart.items = []; // empty the items array
+    cart.totalAmount = 0; // set the total amount to 0
+
+    const updatedCart = await cart.save();
+    return { data: updatedCart, statusCode: 200 };
+}
