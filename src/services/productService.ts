@@ -36,7 +36,7 @@ export const seedInitialProducts = async () => {  // this function we use it to 
         await productModel.insertMany(products);
         
       }
-    } catch (err) {
+    } catch (err: any) {
         console.error("cannot see database", err);
     }
 }
