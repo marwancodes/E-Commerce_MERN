@@ -19,7 +19,7 @@ export const register = async ({firstName, lastName, email, password}: RegisterP
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt); // hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); // hash the password
 
     const newUser = new userModel({ email, firstName, lastName, password: hashedPassword });
     await newUser.save();
