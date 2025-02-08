@@ -1,7 +1,12 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
+import { useAuth } from "../contexts/auth/AuthContext";
+
+
 
 const RegisterPage = () => {
+    
+    const { login } = useAuth();
 
     const [error, setError] = useState("");
     const firstNameRef = useRef<HTMLInputElement>(null);
@@ -41,8 +46,14 @@ const RegisterPage = () => {
                 return;
             }
     
-            const data = await response.json();
-            console.log(data);
+            const token = await response.json();
+            // console.log(token);
+            if (!token) {
+                setError("Incorrect token");
+                return;
+              }
+
+            login(email,token);
         } catch (err) {
             console.error("Error creating item:", err);
         }
