@@ -11,12 +11,14 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useAuth } from '../contexts/auth/AuthContext';
+import { Button, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
 
-  const {username, token} = useAuth();
+  const navigate = useNavigate();
+  const {username, isAuthenticated} = useAuth();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -29,7 +31,12 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  console.log("from navbar: ", {username, token})
+  const handleLogin = () => {
+    navigate('/login');
+  }
+
+  // console.log("from navbar: ", {username, token});
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -53,33 +60,53 @@ function ResponsiveAppBar() {
                 </Box>
             
             <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-                </Tooltip>
-                <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-                >
-                {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                    </MenuItem>
-                ))}
-                </Menu>
+                {isAuthenticated ? (
+                  <>
+                    <Tooltip title="Open settings" sx={{ display: "flex", flexDirection: "row"}}>
+
+                      <Grid container alignItems="center" justifyContent="center" gap={1}>
+                        <Grid item>
+                          <Typography>{username}</Typography>
+                        </Grid>
+                        <Grid item>
+                          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                              <Avatar alt={username || ''} src="/static/images/avatar/2.jpg" />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+
+                    </Tooltip>
+                    <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                    >
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography sx={{ textAlign: 'center' }}>Profile</Typography>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+                      </MenuItem>
+                    
+                    </Menu>
+                  
+                  </>
+                  ) : (
+                    <Button variant='outlined' sx={{ background: "white"}} onClick={handleLogin}>Login</Button>
+                  )
+                }
+
             </Box>
           </Box>
         </Toolbar>
