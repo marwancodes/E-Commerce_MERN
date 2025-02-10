@@ -63,6 +63,7 @@ const RegisterPage = () => {
 
     }
 
+
   return (
     <Container>
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", mt: 4 }}>

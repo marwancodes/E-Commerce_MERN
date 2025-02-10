@@ -11,8 +11,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useAuth } from '../contexts/auth/AuthContext';
-import { Button, Grid } from '@mui/material';
+import { Badge, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { ShoppingCart } from '@mui/icons-material';
 
 
 function ResponsiveAppBar() {
@@ -26,6 +27,9 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
+  const handleLogo = () => {
+    navigate('/');
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -39,6 +43,10 @@ function ResponsiveAppBar() {
     logout();
     navigate('/');
     handleCloseUserMenu();
+  }
+
+  const hadleCart = () => {
+    navigate('/cart');
   }
 
   // console.log("from navbar: ", {username, token});
@@ -59,13 +67,22 @@ function ResponsiveAppBar() {
                         display: { xs: 'none', md: 'flex' },
                         fontFamily: 'monospace',
                         fontWeight: 700,
+                        cursor: "pointer"
                         }}
+                        onClick={handleLogo}
                     >
                         Eco Tech
                     </Typography>
                 </Box>
             
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ flexGrow: 0, display: "flex", flexDirection: "row", alignItems: "center" }} gap={3}>
+
+            <IconButton aria-label="cart" onClick={hadleCart}>
+              <Badge badgeContent={2} color="secondary">
+                <ShoppingCart sx={{ color: "white"}} />
+              </Badge>
+            </IconButton>
+            
                 {isAuthenticated ? (
                   <>
                     <Tooltip title="Open settings" sx={{ display: "flex", flexDirection: "row"}}>

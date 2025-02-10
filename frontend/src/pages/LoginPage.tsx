@@ -58,6 +58,10 @@ const LoginPage = () => {
 
     }
 
+    const goToCreate = () => {
+      navigate('/register')
+    }
+
   return (
     <Container>
       <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", mt: 4 }}>
@@ -72,6 +76,8 @@ const LoginPage = () => {
             <Button variant='contained' onClick={handleSubmit}>Login</Button>
             {error && <Typography sx={{ color: "red", marginX: "auto" }}>{error}</Typography>}
         </Box>
+
+        <Button onClick={goToCreate}>Create New Account</Button>
 
       </Box>
     </Container>
