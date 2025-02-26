@@ -11,27 +11,6 @@ const CartPage = () => {
     const { cartItems, totalAmount } = useCart();
     const [error, setError] = useState("");
 
-    
-    // useEffect(() => {
-    //     if (!token) {
-    //         return;
-    //     }
-    //     const fetchCart = async () => {
-    //         const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/cart`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         });
-    
-    //         if (!response.ok) {
-    //             setError('failed to fetch user cart. Please try again!')
-    //         }
-    
-    //         const data = await response.json();
-    //         setCart(data);
-    //     };
-    //     fetchCart();
-    // }, [token]);
 
 
     return (

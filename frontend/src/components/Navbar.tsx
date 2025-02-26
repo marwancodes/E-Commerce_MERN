@@ -14,12 +14,15 @@ import { useAuth } from '../contexts/auth/AuthContext';
 import { Badge, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart } from '@mui/icons-material';
+import { useCart } from '../contexts/cart/CartContext';
 
 
 function ResponsiveAppBar() {
 
   const navigate = useNavigate();
   const {username, isAuthenticated, logout} = useAuth();
+
+  const { cartItems } = useCart();
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -78,7 +81,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0, display: "flex", flexDirection: "row", alignItems: "center" }} gap={3}>
 
             <IconButton aria-label="cart" onClick={hadleCart}>
-              <Badge badgeContent={2} color="secondary">
+              <Badge badgeContent={cartItems.length} color="secondary">
                 <ShoppingCart sx={{ color: "white"}} />
               </Badge>
             </IconButton>
