@@ -17,11 +17,19 @@ const createCartForUser = async ({ userId }: CreateCartForUser) => { // this fun
 
 interface GetActiveCartForUser {
     userId: string;
+    populateProduct?: boolean;
 }
 
-export const getActiveCartForUser = async ({ userId }: GetActiveCartForUser) => { // this function to get the active cart for the user
+export const getActiveCartForUser = async ({ userId, populateProduct }: GetActiveCartForUser) => { // this function to get the active cart for the user
     
-    let cart = await cartModel.findOne({ userId, status: "active" }); 
+    let cart ;
+    if (populateProduct) {
+        cart = await cartModel
+            .findOne({ userId, status: "active" })
+            .populate('items.product');
+    } else {
+        cart = await cartModel.findOne({ userId, status: "active" });
+    }
 
     if (!cart) { // if there is no active cart for the user
         cart = await createCartForUser({ userId });
@@ -65,9 +73,9 @@ export const addItemToCart = async ({ productId, quantity, userId }: AddItemToCa
     // update the totalAmount for the cart
     cart.totalAmount += product.price * quantity;
 
-    const updatedCart = await cart.save();
+    await cart.save();
 
-    return { data: updatedCart, statusCode: 201 };
+    return { data: await getActiveCartForUser({ userId, populateProduct: true}), statusCode: 200 };
 }
 
 //************************************** Update Item In Cart ********************************************************************
@@ -112,8 +120,8 @@ export const updateItemInCart = async ({ productId, quantity, userId }: UpdateIt
     total += existsInCart.quantity * existsInCart.unitPrice;
     cart.totalAmount = total; // update the total amount for the cart
 
-    const updatedCart = await cart.save();
-    return { data: updatedCart, statusCode: 200 };    
+    await cart.save();
+    return { data: await getActiveCartForUser({ userId, populateProduct: true}), statusCode: 200 };    
 }
 
 //************************************** Delete Item From Cart ********************************************************************
@@ -145,16 +153,16 @@ export const deleteItemFromCart = async ({ productId, userId }: DeleteItemFromCa
     cart.totalAmount = total; // update the total amount for the cart
 
 
-    const updatedCart = await cart.save();
-    return { data: updatedCart, statusCode: 200 };
+    await cart.save();
+    return { data: await getActiveCartForUser({ userId, populateProduct: true}), statusCode: 200 };
 }
 
-//************************************** Clean Cart ********************************************************************
-interface CleanCart {
+//************************************** Clear Cart ********************************************************************
+interface ClearCart {
     userId: string;
 }
 
-export const cleanCart = async ({ userId }: CleanCart) => {
+export const clearCart = async ({ userId }: ClearCart) => {
     const cart = await getActiveCartForUser({ userId }); // get the active cart for the user
 
     cart.items = []; // empty the items array
