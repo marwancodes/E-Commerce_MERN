@@ -24,7 +24,7 @@ const ProductCard = ({ _id, title, image, price }: Product) => {
           {title}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {price} MAD
+          {price.toFixed(2)} MAD
         </Typography>
       </CardContent>
       <CardActions>

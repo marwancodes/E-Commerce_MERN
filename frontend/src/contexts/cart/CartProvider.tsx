@@ -29,16 +29,17 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
             const cart = await response.json();
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const cartItemsMapped = cart.items.map(({ product, quantity }: {product: any; quantity: number;}) => ({ // we map the data to make it the same as the CartItem type if it is not the same to change name or type
+            const cartItemsMapped = cart.items.map(({ product, quantity, unitPrice }: {product: any; quantity: number; unitPrice: number}) => ({ // we map the data to make it the same as the CartItem type if it is not the same to change name or type
                 /* cart.items.map((i) => { productId: i.product._id, ... })  This is another way*/
                 productId: product._id,
                 title: product.title,
                 image: product.image,
                 quantity,
-                unitPrice: product.unitPrice
+                unitPrice,
             }));
 
             setCartItems(cartItemsMapped);
+            setTotalAmount(cart.totalAmount);
         };
         fetchCart();
     }, [token]);
