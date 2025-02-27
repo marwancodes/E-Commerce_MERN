@@ -11,6 +11,7 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     const [totalAmount, setTotalAmount] = useState<number>(0);
     const [error, setError] = useState('');
 
+    // fetch cart items
     useEffect(() => {
         if (!token) {
             return;
@@ -44,6 +45,7 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         fetchCart();
     }, [token]);
 
+    // add item to cart
     const addItemToCart = async (productId: string) => {
         try {
             // console.log("This is URL: ",import.meta.env.VITE_REACT_APP_BACKEND_BASEURL);
@@ -84,11 +86,53 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         } catch (err) {
             console.error(err)
         }
+    };
+
+    // update item in cart
+    const updateItemInCart = async (productId: string, quantity: number) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/cart/items`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    productId,
+                    quantity,
+                }),
+            });
+
+            if (!response.ok) {
+                setError('Failed to update to cart')
+            }
+
+            const cart = await response.json();
+
+            if (!cart) {
+                setError('Failed to parse cart data');
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const cartItemsMapped = cart.items.map(({ product, quantity, unitPrice }: {product: any; quantity: number; unitPrice: number}) => ({ // we map the data to make it the same as the CartItem type if it is not the same to change name or type
+                /* cart.items.map((i) => { productId: i.product._id, ... })  This is another way*/
+                productId: product._id,
+                title: product.title,
+                image: product.image,
+                quantity,
+                unitPrice,
+            }));
+
+            setCartItems([...cartItemsMapped]);
+            setTotalAmount(cart.totalAmount);
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return (
         <CartContext.Provider
-            value={{ cartItems, totalAmount, addItemToCart }}
+            value={{ cartItems, totalAmount, addItemToCart, updateItemInCart }}
         >
             {children}
         </CartContext.Provider>
@@ -96,3 +140,4 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
 }
 
 export default CartProvider;
+
