@@ -5,7 +5,7 @@ import { useCart } from "../contexts/cart/CartContext";
 
 const CartPage = () => {
 
-    const { cartItems, totalAmount, updateItemInCart } = useCart();
+    const { cartItems, totalAmount, updateItemInCart, removeItemInCart } = useCart();
 
     const handleQuantity = (productId: string, quantity: number) => {
         if (quantity < 1) {
@@ -13,6 +13,10 @@ const CartPage = () => {
         }
         updateItemInCart(productId, quantity);
     };
+
+    const handleRemoveItem = (productId: string) => {
+        removeItemInCart(productId);
+    }
 
 
     return (
@@ -24,7 +28,8 @@ const CartPage = () => {
                     <img src={item.image} alt={item.title} width={150} />
                     <Box>
                         <Typography variant="h5">{item.title}</Typography>
-                        <Typography>{item.quantity} x {item.unitPrice.toFixed(2)} MAD</Typography>                            <Button color="error">Remove Item</Button>
+                        <Typography>{item.quantity} x {item.unitPrice.toFixed(2)} MAD</Typography>                            
+                        <Button color="error" onClick={() => handleRemoveItem(item.productId)}>Remove Item</Button>
                     </Box>
                 </Box>
                 <ButtonGroup variant="contained" aria-label="Basic button group">
