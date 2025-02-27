@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Product } from '../types/Product';
 import { useCart } from '../contexts/cart/CartContext';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 
 const ProductCard = ({ _id, title, image, price }: Product) => {
@@ -28,7 +29,7 @@ const ProductCard = ({ _id, title, image, price }: Product) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant='contained' size="small" onClick={() => addItemToCart(_id)}>Add to cart</Button>
+        <Button variant='contained' size="small" onClick={() => addItemToCart(_id)}><AddShoppingCartIcon /> Add to cart</Button>
       </CardActions>
     </Card>
   );
