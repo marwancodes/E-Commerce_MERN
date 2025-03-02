@@ -24,7 +24,6 @@ const NotFound = () => {
                 We can't find the page you are looking for.
             </Typography>
         </Box>
-
     </Container>
   )
 }

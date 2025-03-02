@@ -49,7 +49,7 @@ function ResponsiveAppBar() {
   }
 
   const handleCart = () => {
-    navigate('/cart');
+    navigate("/cart");
   }
 
   // console.log("from navbar: ", {username, token});

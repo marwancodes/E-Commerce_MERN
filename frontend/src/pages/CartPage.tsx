@@ -1,10 +1,12 @@
 import { Box, Container, Typography, Button, ButtonGroup } from "@mui/material"
 import { useCart } from "../contexts/cart/CartContext";
+import { useNavigate } from "react-router-dom";
 
 
 
 const CartPage = () => {
 
+    const navigate = useNavigate();
     const { cartItems, totalAmount, updateItemInCart, removeItemInCart, clearCart } = useCart();
 
     const handleQuantity = (productId: string, quantity: number) => {
@@ -32,12 +34,15 @@ const CartPage = () => {
                         </Box>
                         <ButtonGroup variant="contained" aria-label="Basic button group">
                             <Button onClick={() => handleQuantity(item.productId, item.quantity - 1)}>-</Button>
+                            <Button disabled>{item.quantity}</Button>
                             <Button onClick={() => handleQuantity(item.productId, item.quantity + 1)}>+</Button>
+                            
                         </ButtonGroup>
                     </Box>
                 ))}
-                <Box>
+                <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' sx={{ mt: 2 }}>
                     <Typography variant="h5">Total Amount: {totalAmount.toFixed(2)} MAD</Typography> 
+                    <Button variant="contained" onClick={() => navigate('/checkout')}>Go To Checkout</Button>
                 </Box>
         </Box>
     )
@@ -54,7 +59,12 @@ const CartPage = () => {
                 renderCartItems()
             
             :
-            ( <Typography color="#808080">Your cart is empty! Please start shopping and add Items now.</Typography> )}
+            ( 
+                <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center' sx={{ mt: 3 }}>
+                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/empty-cart-illustration-download-in-svg-png-gif-file-formats--shopping-ecommerce-simple-error-state-pack-user-interface-illustrations-6024626.png" alt="" width={200} />
+                    <Typography color="#808080">Your cart is empty! Please start shopping and add Items now.</Typography> 
+                </Box>
+            )}
         </Container>
       );
 }
