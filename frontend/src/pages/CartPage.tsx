@@ -5,7 +5,7 @@ import { useCart } from "../contexts/cart/CartContext";
 
 const CartPage = () => {
 
-    const { cartItems, totalAmount, updateItemInCart, removeItemInCart } = useCart();
+    const { cartItems, totalAmount, updateItemInCart, removeItemInCart, clearCart } = useCart();
 
     const handleQuantity = (productId: string, quantity: number) => {
         if (quantity < 1) {
@@ -18,29 +18,43 @@ const CartPage = () => {
         removeItemInCart(productId);
     }
 
+    const renderCartItems = () => (
+        <Box>
+                {cartItems.map((item) => (
+                    <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' sx={{ border: 1, borderColor: '#DDDDDD', borderRadius: 5, padding: 2,  mt: 1 }}>
+                        <Box display='flex' flexDirection='row' alignItems='center' gap={2}>
+                            <img src={item.image} alt={item.title} width={150} />
+                            <Box>
+                                <Typography variant="h5">{item.title}</Typography>
+                                <Typography>{item.quantity} x {item.unitPrice.toFixed(2)} MAD</Typography>                            
+                                <Button color="error" onClick={() => handleRemoveItem(item.productId)}>Remove Item</Button>
+                            </Box>
+                        </Box>
+                        <ButtonGroup variant="contained" aria-label="Basic button group">
+                            <Button onClick={() => handleQuantity(item.productId, item.quantity - 1)}>-</Button>
+                            <Button onClick={() => handleQuantity(item.productId, item.quantity + 1)}>+</Button>
+                        </ButtonGroup>
+                    </Box>
+                ))}
+                <Box>
+                    <Typography variant="h5">Total Amount: {totalAmount.toFixed(2)} MAD</Typography> 
+                </Box>
+        </Box>
+    )
+    
 
     return (
         <Container fixed sx={{ mt: 3 }}>
-          <Typography variant="h4">My Cart</Typography>
-        {cartItems.map((item) => (
-            <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' sx={{ border: 1, borderColor: '#DDDDDD', borderRadius: 5, padding: 2,  mt: 1 }}>
-                <Box display='flex' flexDirection='row' alignItems='center' gap={2}>
-                    <img src={item.image} alt={item.title} width={150} />
-                    <Box>
-                        <Typography variant="h5">{item.title}</Typography>
-                        <Typography>{item.quantity} x {item.unitPrice.toFixed(2)} MAD</Typography>                            
-                        <Button color="error" onClick={() => handleRemoveItem(item.productId)}>Remove Item</Button>
-                    </Box>
-                </Box>
-                <ButtonGroup variant="contained" aria-label="Basic button group">
-                    <Button onClick={() => handleQuantity(item.productId, item.quantity - 1)}>-</Button>
-                    <Button onClick={() => handleQuantity(item.productId, item.quantity + 1)}>+</Button>
-                </ButtonGroup>
+            <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ mb: 2 }}>
+                <Typography variant="h4">My Cart</Typography>
+                <Button onClick={() => clearCart()}>Clear Cart</Button>
             </Box>
-        ))}
-        <Box>
-            <Typography variant="h5">Total Amount: {totalAmount.toFixed(2)} MAD</Typography> 
-        </Box>
+
+            {cartItems.length ? 
+                renderCartItems()
+            
+            :
+            ( <Typography color="#808080">Your cart is empty! Please start shopping and add Items now.</Typography> )}
         </Container>
       );
 }

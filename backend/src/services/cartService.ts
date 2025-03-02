@@ -169,7 +169,7 @@ export const clearCart = async ({ userId }: ClearCart) => {
     cart.totalAmount = 0; // set the total amount to 0
 
     const updatedCart = await cart.save();
-    return { data: updatedCart, statusCode: 200 };
+    return { data: await getActiveCartForUser({ userId, populateProduct: true}), statusCode: 200 };
 }
 
 //************************************** Checkout ********************************************************************

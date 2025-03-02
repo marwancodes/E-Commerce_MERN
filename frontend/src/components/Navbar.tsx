@@ -48,7 +48,7 @@ function ResponsiveAppBar() {
     handleCloseUserMenu();
   }
 
-  const hadleCart = () => {
+  const handleCart = () => {
     navigate('/cart');
   }
 
@@ -80,7 +80,7 @@ function ResponsiveAppBar() {
             
             <Box sx={{ flexGrow: 0, display: "flex", flexDirection: "row", alignItems: "center" }} gap={3}>
 
-            <IconButton aria-label="cart" onClick={hadleCart}>
+            <IconButton aria-label="cart" onClick={handleCart}>
               <Badge badgeContent={cartItems.length} color="secondary">
                 <ShoppingCart sx={{ color: "white"}} />
               </Badge>
