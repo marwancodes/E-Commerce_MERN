@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage"
 import CartPage from "./pages/CartPage"
 import ProtectedRoute from "./components/ProtectedRoute"
 import CartProvider from "./contexts/cart/CartProvider"
+import NotFound from "./pages/NotFound"
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/cart" element={<CartPage />}/>
             </Route>
+            <Route path="*" element={<NotFound />}/>
           </Routes>
         </BrowserRouter>
       </CartProvider>
