@@ -1,14 +1,41 @@
-import { Box, Container, Typography, Button, TextField } from "@mui/material"
+import { Box, Container, Typography, Button, TextField } from "@mui/material";
 import { useCart } from "../contexts/cart/CartContext";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/auth/AuthContext";
 
 
 
 const CheckoutPage = () => {
 
+    const { token } = useAuth();
     const { cartItems, totalAmount} = useCart();
     const addressRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
     
+    const handleConfirmOrder = async () => {
+        const address = addressRef.current?.value;
+        if (!address) {
+            return;
+        }
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/cart/checkout`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                address,
+            }),
+        });
+
+        if (!response.ok) {
+            console.error('Failed to checkout');
+            return;
+        }
+
+        navigate('/order-success');
+    }
 
 
     const renderCartItems = () => (
@@ -39,7 +66,7 @@ const CheckoutPage = () => {
             </Box>
             <TextField inputRef={addressRef} label="Delivery Address" name="address" fullWidth sx={{ mb: 2 }}/>
             {renderCartItems()}
-            <Button variant="contained" fullWidth sx={{ mt: 1, background: "#008000" }}>Pay Now</Button>
+            <Button variant="contained" fullWidth sx={{ mt: 1, background: "#008000" }} onClick={handleConfirmOrder}>Pay Now</Button>
         </Container>
       );
 }
