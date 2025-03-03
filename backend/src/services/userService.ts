@@ -1,6 +1,7 @@
 import { userModel } from "../models/user.model";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { orderModel } from "../models/order.model";
 
 
 //************************************** Register ********************************************************************
@@ -53,6 +54,19 @@ export const login = async ({email, password}: LoginParams) => {
     }
 
     return {data: "Incorrect email or password!", statusCode: 400}; 
+}
+
+//************************************** Get My Orders ********************************************************************
+interface GetMyOrdersParams {
+    userId: string;
+}
+
+export const getMyOrders = async ({ userId }: { userId: GetMyOrdersParams }) => {
+    try {
+        return {data: await orderModel.find({ userId }), statusCode: 200};
+    } catch (error) {
+        throw error;
+    }
 }
 
 //************************************** Generate Token ********************************************************************

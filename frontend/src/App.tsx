@@ -10,6 +10,7 @@ import CartProvider from "./contexts/cart/CartProvider"
 import NotFound from "./pages/NotFound"
 import CheckoutPage from "./pages/CheckoutPage"
 import OrderSuccessPage from "./pages/OrderSuccessPage"
+import MyOrdersPage from "./pages/MyOrdersPage"
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path="/cart" element={<CartPage />}/>
               <Route path="/checkout" element={<CheckoutPage />}/>
               <Route path="/order-success" element={<OrderSuccessPage />}/>
+              <Route path="/my-orders" element={<MyOrdersPage />}/>
             </Route>
             <Route path="*" element={<NotFound />}/>
           </Routes>
