@@ -27,7 +27,7 @@ const LoginPage = () => {
 
         // Make the call to API to create the new user
         try {
-            const response = await fetch("http://localhost:4000/user/login", {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}user/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

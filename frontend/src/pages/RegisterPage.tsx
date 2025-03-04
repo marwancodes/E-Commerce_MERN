@@ -30,7 +30,7 @@ const RegisterPage = () => {
 
         // Make the call to API to create the new user
         try {
-            const response = await fetch("http://localhost:4000/user/register", {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}user/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
