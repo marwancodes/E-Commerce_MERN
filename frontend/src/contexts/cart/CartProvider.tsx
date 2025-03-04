@@ -195,7 +195,7 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return (
         <CartContext.Provider
-            value={{ cartItems, totalAmount, addItemToCart, updateItemInCart, removeItemInCart, clearCart }}
+            value={{ cartItems, totalAmount, error, addItemToCart, updateItemInCart, removeItemInCart, clearCart }}
         >
             {children}
         </CartContext.Provider>
